@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+*.apk
+apk_extract/
+.daemon.pid
+daemon.log
