@@ -4,4 +4,6 @@ __pycache__/
 *.apk
 apk_extract/
 .daemon.pid
+.daemon.stop
 daemon.log
+answer.json

@@ -1,18 +1,18 @@
 #!/bin/zsh
-# Stop the Divoom status daemon.
+# Stop the Divoom status daemon cleanly (works both inside and outside sandbox).
 cd "$(dirname "$0")" || exit 1
 PID_FILE=.daemon.pid
+STOP_FILE=.daemon.stop
 
-if [[ ! -f $PID_FILE ]]; then
-  echo "Daemon not running (no PID file)"
-  exit 0
-fi
+touch "$STOP_FILE"
 
-PID=$(cat "$PID_FILE")
-if kill -0 "$PID" 2>/dev/null; then
-  kill -TERM "$PID"
-  echo "Daemon stopped (PID $PID)"
+if [[ -f $PID_FILE ]]; then
+  PID=$(cat "$PID_FILE")
+  kill -TERM "$PID" 2>/dev/null
+  echo "Stopping daemon (PID $PID)..."
+  rm -f "$PID_FILE"
 else
-  echo "Daemon was not running (stale PID $PID)"
+  echo "Stop signal written."
 fi
-rm -f "$PID_FILE"
+sleep 0.6
+rm -f "$STOP_FILE"
